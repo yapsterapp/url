@@ -83,6 +83,17 @@
                                        (map->query query))))
            (when anchor (str \# anchor))))))
 
+(defn normalize
+  [path]
+  (when (not (string/blank? path))
+    (let [lastchar (fn [x] (get x (- (count x) 1)))
+          original-ends-with-slash? (= (lastchar path) \/)
+          normalized (pathetic/normalize path)] 
+      (if (and original-ends-with-slash?
+               (not= (lastchar normalized) \/))
+        (str normalized "/")
+        normalized))))
+
 #+clj
 (defn- url*
   [url]
@@ -93,7 +104,7 @@
           (and (seq pass) pass)
           (.getHost url)
           (.getPort url)
-          (pathetic/normalize (.getPath url))
+          (normalize (.getPath url))
           (query->map (.getQuery url))
           (.getRef url))))
 
@@ -114,7 +125,7 @@
           (and (seq pass) pass)
           (.getDomain url)
           (translate-default (.getPort url) nil -1)
-          (pathetic/normalize (.getPath url))
+          (normalize (.getPath url))
           (query->map (translate-default (.getQuery url) "" nil))
           (translate-default (.getFragment url) "" nil))))
 
@@ -135,7 +146,7 @@
       (url* url)))
   ([base-url & path-segments]
     (let [base-url (if (instance? URL base-url) base-url (url base-url))]
-      (assoc base-url :path (pathetic/normalize (reduce pathetic/resolve
-                                                        (:path base-url)
-                                                        path-segments))))))
+      (assoc base-url :path (normalize (reduce pathetic/resolve
+                                               (:path base-url)
+                                               path-segments))))))
 
