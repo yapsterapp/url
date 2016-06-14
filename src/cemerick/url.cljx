@@ -85,12 +85,11 @@
 
 (defn normalize
   [path]
-  (when (not (string/blank? path))
-    (let [lastchar (fn [x] (get x (- (count x) 1)))
-          original-ends-with-slash? (= (lastchar path) \/)
+  (when-not (string/blank? path)
+    (let [original-ends-with-slash? (= (last path) \/)
           normalized (pathetic/normalize path)] 
       (if (and original-ends-with-slash?
-               (not= (lastchar normalized) \/))
+               (not= (last normalized) \/))
         (str normalized "/")
         normalized))))
 
