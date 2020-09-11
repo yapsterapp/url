@@ -55,6 +55,7 @@
 
 (deftest path-normalization
   (is (= "http://a/" (url-str "http://a/b/c/../..")))
+  (is (= "http://test.a/a/" (url-str "http://test.a/a/")))
   
   (is (= "http://a/b/c" (url-str "http://a/b/" "c")))
   (is (= "http://a/b/c" (url-str "http://a/b/.." "b" "c")))
