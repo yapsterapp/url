@@ -24,6 +24,12 @@
                   {:source-paths ["src"]
                    :output-path "target/generated-src"
                    :rules :cljs}
+                  {:source-paths ["src"]
+                   :output-path "src"
+                   :rules :clj}
+                  {:source-paths ["src"]
+                   :output-path "src"
+                   :rules :cljs}
                   {:source-paths ["test"]
                    :output-path "target/generated-test"
                    :rules :clj}
